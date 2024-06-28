@@ -6,7 +6,7 @@ const program = new Command();
 program
     .name("clay")
     .description("A CLI for creating fullstack apps")
-    .version("0.0.0");
+    .version("0.0.0")
 
 SvelteCommands(program);
 
