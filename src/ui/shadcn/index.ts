@@ -3,10 +3,10 @@ import { execa } from "execa";
 import { Write } from "../../utils/file.js";
 import { InstallTailwindDeps, WriteTailwindPostcss } from "../tailwind/index.js";
 
-export async function GenerateShadcn(style: string, baseColor: string, typescript: boolean, packageManager: string | undefined, components: boolean) {
+export async function GenerateShadcn(style: string, baseColor: string, typescript: boolean | undefined, packageManager: string | undefined, components: boolean) {
     const componentConfig = ComponentConfig(style, baseColor, typescript);
     Write("./components.json", componentConfig);
-    Write("./tailwind.config.ts", ShadcnTailwindConfig());
+    Write(`./tailwind.config.${typescript ? "ts" : "js"}`, ShadcnTailwindConfig());
     Write("./src/lib/utils.ts", ShadcnUtils());
     Write("./src/routes/styles.css", ShadcnTheming());
 
@@ -16,7 +16,7 @@ export async function GenerateShadcn(style: string, baseColor: string, typescrip
     await ShadcnDependencies(packageManager, style, components);
 }
 
-export function ComponentConfig(style: string | undefined, baseColor: string | undefined, typescript: boolean) {
+export function ComponentConfig(style: string | undefined, baseColor: string | undefined, typescript: boolean | undefined) {
     return JSON.stringify({
         "$schema": "https://shadcn-svelte.com/schema.json",
         "style": `${style}`,

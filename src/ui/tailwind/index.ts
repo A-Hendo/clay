@@ -1,7 +1,7 @@
 import { execa } from "execa";
 import { Write } from "../../utils/file.js";
 
-export async function GenerateTailwind(packageManager: string | undefined) {
+export async function GenerateTailwind(packageManager: string | undefined, typescript: boolean | undefined) {
     const packages = ["tailwindcss", "postcss", "autoprefixer"];
 
     if (packageManager === "npm") {
@@ -11,7 +11,7 @@ export async function GenerateTailwind(packageManager: string | undefined) {
         await execa("yarn", ["add"].concat(packages));
     }
 
-    Write("./tailwind.config.js", TailwindConfig());
+    Write(`./tailwind.config.${typescript ? "ts" : "js"}`, TailwindConfig());
     Write("./src/routes/styles.css", Tailwindcss());
 };
 
