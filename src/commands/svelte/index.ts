@@ -9,7 +9,7 @@ import { UIPrompts } from "../../ui/index.js";
 import { GenerateDaisyUI } from "../../ui/daisy-ui/index.js";
 import { GenerateShadcn, PromptBaseColour, PromptComponents, PromptStyle } from "../../ui/shadcn/index.js";
 
-type svelteOptions = Options & { interactive?: boolean, css?: string | null, manager?: string, ui?: string, lang?: string };
+type svelteOptions = Options & { interactive?: boolean, css?: string | null, manager?: string, ui?: string, lang?: boolean };
 interface shadcnOptions { style: string, baseColour: string, components: boolean }
 
 export function SvelteCommands(program: Command) {
@@ -77,11 +77,14 @@ export function SvelteCommands(program: Command) {
 
             await CreateSvelte(options);
 
-            if (process.cwd() === projectPath)
+            if (process.cwd() !== projectPath) {
                 process.chdir(projectPath);
+            }
 
             if (options.ui === "shadcn") {
-                await GenerateShadcn(shadcn.style, shadcn.baseColour, options.lang === "ts" ? true : false, options.manager, shadcn.components);
+                await GenerateShadcn(shadcn.style, shadcn.baseColour, options.lang, options.manager, shadcn.components);
+            } else if (options.ui === "daisy-ui") {
+                await GenerateDaisyUI(options.manager, options.lang);
             }
         });
 };
@@ -150,11 +153,12 @@ export async function ManagerPrompts() {
 };
 
 export async function LanguagePrompt() {
-    return await select({
+    const lang = await select({
         message: "Select language",
         choices: [
             { name: "Typescript", value: "ts" },
             { name: "Javascript", value: "js" },
         ],
     });
+    return lang === "ts" ? true : false
 }
