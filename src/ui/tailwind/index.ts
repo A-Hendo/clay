@@ -1,8 +1,9 @@
 import { execa } from "execa";
 import { Write } from "../../utils/file.js";
 
+const packages = ["tailwindcss", "postcss", "autoprefixer"];
+
 export async function GenerateTailwind(packageManager: string | undefined, typescript: boolean | undefined) {
-    const packages = ["tailwindcss", "postcss", "autoprefixer"];
 
     if (packageManager === "npm") {
         await execa("npm", ["install", "-D"].concat(packages));
@@ -11,28 +12,30 @@ export async function GenerateTailwind(packageManager: string | undefined, types
         await execa("yarn", ["add"].concat(packages));
     }
 
-    Write(`./tailwind.config.${typescript ? "ts" : "js"}`, TailwindConfig());
-    Write("./src/routes/styles.css", Tailwindcss());
+    WriteTailwindConfig(typescript);
+    WriteTailwindcss();
 };
 
-export async function InstallTailwindDeps(packageManager: string | undefined) {
+export async function InstallTailwindDependencies(packageManager: string | undefined) {
     if (packageManager === "npm") {
         await execa("npm", ["install", "-D", "tailwindcss", "postcss", "autoprefixer"]);
     } else if (packageManager === "yarn") {
-        await execa("yarn", ["add", "-D", "tailwindcss", "postcss", "autoprefixer"]);
+        await execa("yarn", ["add", "tailwindcss", "postcss", "autoprefixer", "-D"]);
     }
 }
 
-
-export function Tailwindcss() {
-    return `@tailwind base;
+export function WriteTailwindcss() {
+    const data = `@tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
+
 `;
+    Write("./src/routes/styles.css", data);
 }
 
-function TailwindConfig() {
-    return `/** @type {import('tailwindcss').Config} */
+function WriteTailwindConfig(typescript: boolean | undefined) {
+    const data = `/** @type {import('tailwindcss').Config} */
 export default = {
   darkMode: ["class"],
   content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -42,8 +45,8 @@ export default = {
   plugins: [],
 }
 `;
+    Write(`./tailwind.config.${typescript ? "ts" : "js"}`, data);
 };
-
 
 export function WriteTailwindPostcss() {
     const data = `export default {
@@ -53,6 +56,5 @@ export function WriteTailwindPostcss() {
   },
 }
 `;
-
     Write("./postcss.config.js", data);
 };
