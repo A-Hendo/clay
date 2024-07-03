@@ -1,7 +1,7 @@
 import { confirm, select } from "@inquirer/prompts";
 import { execa } from "execa";
 import { Write } from "../../utils/file.js";
-import { InstallTailwindDeps, WriteTailwindPostcss } from "../tailwind/index.js";
+import { InstallTailwindDependencies, WriteTailwindPostcss } from "../tailwind/index.js";
 
 export async function GenerateShadcn(style: string, baseColor: string, typescript: boolean | undefined, packageManager: string | undefined, components: boolean) {
     const componentConfig = ComponentConfig(style, baseColor, typescript);
@@ -11,9 +11,9 @@ export async function GenerateShadcn(style: string, baseColor: string, typescrip
     Write("./src/routes/styles.css", ShadcnTheming());
 
     WriteTailwindPostcss();
-    InstallTailwindDeps(packageManager);
+    InstallTailwindDependencies(packageManager);
 
-    await ShadcnDependencies(packageManager, style, components);
+    await InstallShadcnDependencies(packageManager, style, components);
 }
 
 export function ComponentConfig(style: string | undefined, baseColor: string | undefined, typescript: boolean | undefined) {
@@ -33,7 +33,7 @@ export function ComponentConfig(style: string | undefined, baseColor: string | u
     }, null, 4);
 }
 
-async function ShadcnDependencies(packageManager: string | undefined, style: string, components: boolean) {
+export async function InstallShadcnDependencies(packageManager: string | undefined, style: string, components: boolean) {
     const PROJECT_DEPENDENCIES: string[] = ["tailwind-variants", "clsx", "tailwind-merge", `${style === "default" ? "lucide-svelte" : "svelte-radix"}`];
 
     if (packageManager === "npm") {
