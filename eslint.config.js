@@ -12,6 +12,8 @@ export default tseslint.config(
             "quotes": ["error", "double", { "allowTemplateLiterals": true }],
             "eol-last": ["error", "always"],
             "indent": ["error", 4],
+            "max-len": ["error", 120],
+            "function-paren-newline": ["error", "consistent"],
         }
     }
 );
