@@ -1,11 +1,11 @@
 <div align="center">
-<h1>Clay</h1>
+<h1>Crejs</h1>
 
 **A CLI project scaffolding tool**
 
 </div>
 
-Clay enables you to start building your applications faster,
+crejs enables you to start building your applications faster,
 from setting up a project to automatically installing a UI framework, all ready to use out-of-the-box.
 
 ## Install
@@ -13,9 +13,9 @@ from setting up a project to automatically installing a UI framework, all ready 
 Install the package globally:
 
 ```bash
-npm -g install clay
+npm -g install crejs
 or
-yarn global add clay
+yarn global add crejs
 ```
 
 
@@ -24,9 +24,9 @@ yarn global add clay
 Now you can use the cli tool to interactively scaffold your project
 
 ```bash
-clay sveltekit
+crejs sveltekit
 or
-clay vite
+crejs vite
 ```
 
 

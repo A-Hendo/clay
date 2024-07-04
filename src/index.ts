@@ -5,7 +5,7 @@ import { ViteCommands } from "./commands/vite/index.js";
 
 
 console.log(
-    figlet.textSync("CLAY", {
+    figlet.textSync("CREJS", {
         font: "Standard",
         horizontalLayout: "default",
         verticalLayout: "default",
@@ -16,9 +16,9 @@ console.log("\n\n");
 const program = new Command();
 
 program
-    .name("clay")
+    .name("crejs")
     .description("A CLI for scaffolding applications")
-    .version("0.1.0")
+    .version("0.1.1")
 
 SvelteKitCommands(program);
 
