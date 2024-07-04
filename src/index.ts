@@ -18,7 +18,7 @@ const program = new Command();
 program
     .name("clay")
     .description("A CLI for scaffolding applications")
-    .version("0.0.0")
+    .version("0.1.0")
 
 SvelteKitCommands(program);
 
