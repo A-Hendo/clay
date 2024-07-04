@@ -3,7 +3,6 @@ import { create } from "create-svelte";
 import { execa } from "execa";
 import * as path from "path";
 import { Write } from "../../utils/file.js";
-import { CreateAstro } from "../astro/index.js";
 import { Base } from "../index.js";
 
 
@@ -88,7 +87,6 @@ export async function CreateSvelte(name: string, packageManager: string | undefi
     if (process.cwd() !== projectPath)
         process.chdir(projectPath);
 
-    await CreateAstro(packageManager);
 }
 
 function WriteSkeletonLayout() {
