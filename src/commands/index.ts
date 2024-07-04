@@ -1,13 +1,12 @@
 import { select } from "@inquirer/prompts";
 
 
-export interface BaseOptions { css: string | null, manager: string, ui: string, typescript: boolean };
+export interface BaseOptions { manager: string, ui: string, typescript: boolean };
 
 export async function BasePrompts(): Promise<BaseOptions> {
     return {
         manager: await ManagerPrompts(),
         typescript: await LanguagePrompt(),
-        css: await CSSPrompts(),
         ui: await UIPrompts(),
     }
 }
@@ -34,20 +33,6 @@ export async function LanguagePrompt() {
     });
     return lang === "ts" ? true : false
 }
-
-
-export async function CSSPrompts() {
-    const ui: string | null = await select({
-        message: "Do you want to use Tailwind or Bootstrap?",
-        choices: [
-            { name: "Tailwind", value: "tailwind" },
-            { name: "Bootstrap", value: "bootstrap" },
-            { name: "None", value: null },
-        ]
-    });
-    return ui;
-};
-
 
 export async function UIPrompts() {
     const ui: string | null = await select({
