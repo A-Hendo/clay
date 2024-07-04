@@ -8,7 +8,7 @@ interface IBase {
     dependencies: string[];
     devDependencies: string[];
 
-    InstallPackages(): Promise<void>;
+    InstallDependencies(): Promise<void>;
     Create(): Promise<void>;
 }
 
@@ -31,13 +31,19 @@ export class Base implements IBase {
         console.error("Cannot create a new project from the base class, use a subclass instead.");
     }
 
-    async InstallPackages() {
+    async InstallDependencies() {
         if (this.packageManager === "npm") {
-            await execa("npm", ["install"].concat(this.dependencies));
-            await execa("npm", ["install", "-D"].concat(this.devDependencies));
+            if (this.dependencies.length > 0)
+                await execa("npm", ["install"].concat(this.dependencies));
+            if (this.devDependencies.length > 0)
+                await execa("npm", ["install", "-D"].concat(this.devDependencies));
+            await execa("npm")
         } else if (this.packageManager === "yarn") {
-            await execa("yarn", ["add"].concat(this.dependencies));
-            await execa("yarn", ["add"].concat(this.devDependencies).concat(["-D"]));
+            if (this.dependencies.length > 0)
+                await execa("yarn", ["add"].concat(this.dependencies));
+            if (this.devDependencies.length > 0)
+                await execa("yarn", ["add"].concat(this.devDependencies).concat(["-D"]));
+            await execa("yarn")
         }
     }
 };
