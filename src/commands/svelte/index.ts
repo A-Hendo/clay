@@ -7,6 +7,7 @@ import { Base } from "../../frameworks/index.js";
 import { SvelteKitDaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
 import { SvelteKitShadcn } from "../../frameworks/sveltekit/shadcn/index.js";
 import { BasePrompts } from "../index.js";
+import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 type svelteOptions = Options
 
@@ -153,35 +154,3 @@ export async function SveltePrompts() {
     return options;
 };
 
-
-async function PromptStyle() {
-    const style = await select({
-        message: "Select a style",
-        choices: [
-            { name: "Default", value: "default" },
-            { name: "New York", value: "new-york" },
-        ]
-    });
-
-    return style;
-}
-
-async function PromptBaseColour() {
-    const baseColor = await select({
-        message: "Select a base colour",
-        choices: [
-            { name: "Gray", value: "gray" },
-            { name: "Neutral", value: "neutral" },
-            { name: "Slate", value: "slate" },
-            { name: "Zinc", value: "zinc" },
-            { name: "Stone", value: "stone" },
-        ]
-    });
-    return baseColor;
-}
-
-async function PromptComponents() {
-    return await confirm({
-        message: "Do you want to add all Shadcn components?",
-    });
-};

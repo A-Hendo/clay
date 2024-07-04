@@ -3,7 +3,7 @@ import { Command } from "commander";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
-import { PromptBaseColour, PromptComponents, PromptStyle } from "../../ui/shadcn/index.js";
+import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 
 export async function ViteCommands(program: Command) {
@@ -16,7 +16,6 @@ export async function ViteCommands(program: Command) {
             const packageManager = await ManagerPrompts();
             const template = await ViteTemplatePrompt(typescript);
             const ui = await UIPrompts();
-            const components = await PromptComponents();
 
             let project: Base | undefined;
 
@@ -25,6 +24,8 @@ export async function ViteCommands(program: Command) {
 
                     const style = await PromptStyle();
                     const baseColour = await PromptBaseColour();
+                    const components = await PromptComponents();
+
 
                     project = new ReactShadcn(
                         projectName,
