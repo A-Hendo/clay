@@ -1,9 +1,8 @@
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
-import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
-
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
+import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../../ui/shadcn/index.js";
 
 

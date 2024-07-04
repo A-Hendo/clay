@@ -1,8 +1,9 @@
 import { execa } from "execa";
 import * as fs from "fs";
-import { InstallTailwindDependencies, WriteTailwindPostcss } from "../../../../ui/tailwind/index.js";
+import { WriteTailwindPostcss } from "../../../../ui/tailwind/index.js";
 import { Append, Write } from "../../../../utils/file.js";
 import { Vite } from "../../index.js";
+
 
 
 export class ReactShadcn extends Vite {
@@ -10,19 +11,38 @@ export class ReactShadcn extends Vite {
     baseColor: string;
     components: boolean;
 
-    constructor (name: string, template: string, packageManager: string, typescript: boolean, style: string, colour: string, components: boolean) {
+    constructor (
+        name: string,
+        template: string,
+        packageManager: string,
+        typescript: boolean,
+        style: string,
+        colour: string,
+        components: boolean
+    ) {
         super(name, template, packageManager, typescript);
 
         this.style = style;
         this.baseColor = colour;
         this.components = components;
 
-        this.dependencies.concat(["tailwindcss-animate", "class-variance-authority", "clsx", "tailwind-merge", `${this.style === "default" ? "lucide-react" : "@radix-ui/react-icons"}`]);
+        this.dependencies = this.dependencies.concat([
+            "tailwindcss-animate",
+            "class-variance-authority",
+            "clsx", "tailwind-merge",
+            `${this.style === "default" ? "lucide-react" : "@radix-ui/react-icons"}`
+        ]);
+        this.devDependencies = this.devDependencies.concat(["tailwindcss", "postcss", "autoprefixer"]);
     }
+
 
     async Create() {
         await this.CreateVite();
-        await InstallTailwindDependencies(this.packageManager);
+        await this.InstallDependencies();
+
+        if (this.components)
+            await execa("npx", ["shadcn-ui@latest", "add", "-a", "-y"]);
+
         this.WriteViteConfig();
         this.WriteTailwindConfig();
         this.GlobalStyles();
