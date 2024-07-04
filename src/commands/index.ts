@@ -1,5 +1,17 @@
 import { select } from "@inquirer/prompts";
 
+
+export interface BaseOptions { css: string | null, manager: string, ui: string, typescript: boolean };
+
+export async function BasePrompts(): Promise<BaseOptions> {
+    return {
+        manager: await ManagerPrompts(),
+        typescript: await LanguagePrompt(),
+        css: await CSSPrompts(),
+        ui: await UIPrompts(),
+    }
+}
+
 export async function ManagerPrompts() {
     const manager = await select({
         message: "Choose a package manager",
@@ -43,7 +55,6 @@ export async function UIPrompts() {
         choices: [
             { name: "Shadcn", value: "shadcn" },
             { name: "Daisy UI", value: "daisy-ui" },
-            // { name: "Skeleton UI", value: "skeleton-ui" },
         ]
     });
     return ui;

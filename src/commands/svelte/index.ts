@@ -3,18 +3,18 @@ import { Command } from "commander";
 import { type Options } from "create-svelte/types/internal.js";
 import * as fs from "fs";
 import * as path from "path";
-import { CreateSvelte } from "../../frameworks/svelte/index.js";
-import { UIPrompts } from "../../ui/index.js";
+import { Base } from "../../frameworks/index.js";
+import { SvelteKitDaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
+import { SvelteKitShadcn } from "../../frameworks/sveltekit/shadcn/index.js";
+import { BasePrompts } from "../index.js";
 
-import { GenerateDaisyUI } from "../../ui/daisy-ui/index.js";
-import { GenerateShadcn, PromptBaseColour, PromptComponents, PromptStyle } from "../../ui/shadcn/index.js";
+type svelteOptions = Options
 
-type svelteOptions = Options & { interactive?: boolean, css?: string | null, manager?: string, ui?: string, lang?: boolean };
 interface shadcnOptions { style: string, baseColour: string, components: boolean }
 
-export function SvelteCommands(program: Command) {
+export function SvelteKitCommands(program: Command) {
     program
-        .command("svelte")
+        .command("sveltekit")
         .description("Create a new project")
         // .option("-n, --name", "Project name", "my-app")
         // .addOption(
@@ -30,7 +30,7 @@ export function SvelteCommands(program: Command) {
         // .option("-w, --playwright", "Use Playwright", false)
         // .option("-v, --vitest", "Use Vitest", false)
         // .option("-s, --svelte", "Use Svelte", false)
-        .option("-i, --interactive", "Enable interactive mode", false)
+        .option("-i, --interactive", "Enable interactive mode", true)
         // .addOption(
         //     new Option("-l, --lang <lang>", "Typescript or Javascript?")
         //         .choices(["Typescript", "Javascript"])
@@ -48,47 +48,52 @@ export function SvelteCommands(program: Command) {
         //         .choices(["Shadcn", "Skeleton UI", "Daisy UI", "none"])
         //         .default("none"))
         .action(async (options: svelteOptions) => {
+            const baseOptions = await BasePrompts();
 
-            const shadcn: shadcnOptions = {
-                style: "default",
-                baseColour: "gray",
-                components: false
-            };
+            options = await SveltePrompts();
 
-            if (options.interactive) {
-                options = await SveltePrompts();
-                options.lang = await LanguagePrompt();
-                options.ui = await UIPrompts();
-                options.manager = await ManagerPrompts();
+            let project: Base | undefined;
 
-                if (options.ui === "shadcn") {
-                    shadcn.style = await PromptStyle();
-                    shadcn.baseColour = await PromptBaseColour();
-                    shadcn.components = await PromptComponents();
-                }
+            if (baseOptions.ui === "shadcn") {
+                const shadcn: shadcnOptions = {
+                    style: await PromptStyle(),
+                    baseColour: await PromptBaseColour(),
+                    components: await PromptComponents(),
+                };
+
+                project = new SvelteKitShadcn(
+                    options.name,
+                    options.template,
+                    baseOptions.manager,
+                    baseOptions.typescript,
+                    options.types,
+                    options.prettier,
+                    options.eslint,
+                    options.playwright,
+                    options.vitest,
+                    options.svelte5,
+                    shadcn.style,
+                    shadcn.baseColour,
+                    shadcn.components
+                );
+            } else if (baseOptions.ui === "daisy-ui") {
+                project = new SvelteKitDaisyUI(
+                    options.name,
+                    options.template,
+                    baseOptions.manager,
+                    baseOptions.typescript,
+                    options.types,
+                    options.prettier,
+                    options.eslint,
+                    options.playwright,
+                    options.vitest,
+                    options.svelte5,
+                )
             }
 
-            const projectPath = path.join(process.cwd(), options.name);
-
-            if (fs.existsSync(projectPath)) {
-                console.error(`Project folder ${options.name} already exists!`);
-                process.exit(1);
-            }
-
-            await CreateSvelte(options);
-
-            if (process.cwd() !== projectPath) {
-                process.chdir(projectPath);
-            }
-
-            if (options.ui === "shadcn") {
-                await GenerateShadcn(shadcn.style, shadcn.baseColour, options.lang, options.manager, shadcn.components);
-            } else if (options.ui === "daisy-ui") {
-                await GenerateDaisyUI(options.manager, options.lang);
-            }
+            await project?.Create();
         });
 };
-
 
 export async function SveltePrompts() {
     const options: Options = {
@@ -103,6 +108,14 @@ export async function SveltePrompts() {
     };
 
     options.name = await input({ message: "Project name?" });
+
+    const projectPath = path.join(process.cwd(), options.name);
+
+    if (fs.existsSync(projectPath)) {
+        console.error(`Project folder ${options.name} already exists!`);
+        process.exit(1);
+    }
+
     options.template = await select({
         message: "Select a project template",
         choices: [
@@ -140,25 +153,35 @@ export async function SveltePrompts() {
     return options;
 };
 
-export async function ManagerPrompts() {
-    const manager = await select({
-        message: "Choose a package manager",
+
+async function PromptStyle() {
+    const style = await select({
+        message: "Select a style",
         choices: [
-            { name: "Yarn", value: "yarn" },
-            { name: "NPM", value: "npm" },
-            { name: "Bun", value: "bun" },
+            { name: "Default", value: "default" },
+            { name: "New York", value: "new-york" },
         ]
     });
-    return manager;
-};
 
-export async function LanguagePrompt() {
-    const lang = await select({
-        message: "Select language",
-        choices: [
-            { name: "Typescript", value: "ts" },
-            { name: "Javascript", value: "js" },
-        ],
-    });
-    return lang === "ts" ? true : false
+    return style;
 }
+
+async function PromptBaseColour() {
+    const baseColor = await select({
+        message: "Select a base colour",
+        choices: [
+            { name: "Gray", value: "gray" },
+            { name: "Neutral", value: "neutral" },
+            { name: "Slate", value: "slate" },
+            { name: "Zinc", value: "zinc" },
+            { name: "Stone", value: "stone" },
+        ]
+    });
+    return baseColor;
+}
+
+async function PromptComponents() {
+    return await confirm({
+        message: "Do you want to add all Shadcn components?",
+    });
+};

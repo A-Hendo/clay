@@ -3,6 +3,55 @@ import { Write } from "../../utils/file.js";
 
 const packages = ["tailwindcss", "postcss", "autoprefixer"];
 
+
+// type Constructor = new (...args: any[]) => {};
+
+// // This mixin adds a scale property, with getters and setters
+// // for changing it with an encapsulated private property:
+
+// export function TailwindMixin<TBase extends Constructor>(Base: TBase) {
+//     return class Tailwind extends Base {
+//         devDependencies: string[] = ["tailwindcss", "postcss", "autoprefixer"];
+
+
+//         WriteTailwindcss() {
+//             const data = `@tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+// @tailwind variants;
+
+// `;
+//             Write("./src/routes/styles.css", data);
+//         }
+
+//         WriteTailwindConfig(typescript: boolean | undefined) {
+//             const data = `/** @type {import('tailwindcss').Config} */
+// export default = {
+//   darkMode: ["class"],
+//   content: ['./src/**/*.{html,js,svelte,ts}'],
+//   theme: {
+//     extend: {},
+//   },
+//   plugins: [],
+// }
+// `;
+//             Write(`./tailwind.config.${typescript ? "ts" : "js"}`, data);
+//         };
+
+//         WriteTailwindPostcss() {
+//             const data = `export default {
+//   plugins: {
+//     tailwindcss: {},
+//     autoprefixer: {},
+//   },
+// }
+// `;
+//             Write("./postcss.config.js", data);
+//         };
+//     };
+// }
+
+
 export async function GenerateTailwind(packageManager: string | undefined, typescript: boolean | undefined) {
 
     if (packageManager === "npm") {
