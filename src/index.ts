@@ -18,7 +18,7 @@ const program = new Command();
 program
     .name("crejs")
     .description("A CLI for scaffolding applications")
-    .version("0.1.1")
+    .version("0.1.2")
 
 SvelteKitCommands(program);
 
