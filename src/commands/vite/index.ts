@@ -2,6 +2,7 @@ import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
+import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
@@ -36,6 +37,13 @@ export async function ViteCommands(program: Command) {
                         baseColour,
                         components,
                     );
+                } else if (ui === "daisy-ui") {
+                    project = new ReactDaisyUI(
+                        projectName,
+                        template,
+                        packageManager,
+                        typescript,
+                    )
                 }
             } else {
                 project = new Base(projectName, template, packageManager, typescript);
