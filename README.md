@@ -33,21 +33,21 @@ crejs vite
 
 ## Support
 
-|Framework| Language  | UI        |     |
-|---------|-----------|-----------|-----|
-|SvelteKit|           |Daisy UI   | ✔️  |
-|         |           |Shadcn     | ✔️  |
-|Vite     |Vanilla    |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
-|         |Vue        |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
-|         |React      |Daisy UI   | ✔️  |
-|         |           |Shadcn     | ✔️  |
-|         |Lit        |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
-|         |Svelte     |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
-|         |Solid      |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
-|         |Qwik       |Daisy UI   | ❌  |
-|         |           |Shadcn     | ❌  |
+|Framework| Language  | UI        |Support|
+|---------|-----------|-----------|:-----:|
+|SvelteKit|           |Daisy UI   | ✔️    |
+|         |           |Shadcn     | ✔️    |
+|Vite     |Vanilla    |Daisy UI   | ❌    |
+|         |           |Shadcn     | ❌    |
+|         |Vue        |Daisy UI   | ❌    |
+|         |           |Shadcn     | ❌    |
+|         |React      |Daisy UI   | ✔️    |
+|         |           |Shadcn     | ✔️    |
+|         |Lit        |Daisy UI   | ❌    |
+|         |           |Shadcn     | ❌    |
+|         |Svelte     |Daisy UI   | ✔️    |
+|         |           |Shadcn     | ✔️    |
+|         |Solid      |Daisy UI   | ❌    |
+|         |           |Shadcn     | ❌    |
+|         |Qwik       |Daisy UI   | ❌    |
+|         |           |Shadcn     | ❌    |
