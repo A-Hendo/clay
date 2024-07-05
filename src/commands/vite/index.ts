@@ -5,6 +5,7 @@ import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
+import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 
@@ -47,7 +48,21 @@ export async function ViteCommands(program: Command) {
                     )
                 }
             } else if (["svelte", "svelte-ts"].includes(template)) {
-                if (ui === "daisy-ui") {
+                if (ui === "shadcn") {
+                    const style = await PromptStyle();
+                    const baseColour = await PromptBaseColour();
+                    const components = await PromptComponents();
+
+                    project = new SvelteShadcn(
+                        projectName,
+                        template,
+                        packageManager,
+                        typescript,
+                        style,
+                        baseColour,
+                        components,
+                    );
+                } else if (ui === "daisy-ui") {
                     project = new SvelteDaisyUI(projectName, template, packageManager, typescript);
                 }
             } else {
