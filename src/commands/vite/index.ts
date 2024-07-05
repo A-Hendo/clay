@@ -1,5 +1,7 @@
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
+import * as fs from "fs";
+import * as path from "path";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
@@ -7,7 +9,6 @@ import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
 import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
-
 
 export async function ViteCommands(program: Command) {
     program
@@ -19,6 +20,13 @@ export async function ViteCommands(program: Command) {
             const packageManager = await ManagerPrompts();
             const template = await ViteTemplatePrompt(typescript);
             const ui = await UIPrompts();
+
+            const projectPath = path.join(process.cwd(), projectName);
+
+            if (fs.existsSync(projectPath)) {
+                console.error(`Project folder ${projectName} already exists!`);
+                process.exit(1);
+            }
 
             let project: Base | undefined;
 
