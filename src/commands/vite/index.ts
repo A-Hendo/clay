@@ -1,11 +1,14 @@
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
+import * as fs from "fs";
+import * as path from "path";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
+import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
+import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
-
 
 export async function ViteCommands(program: Command) {
     program
@@ -17,6 +20,13 @@ export async function ViteCommands(program: Command) {
             const packageManager = await ManagerPrompts();
             const template = await ViteTemplatePrompt(typescript);
             const ui = await UIPrompts();
+
+            const projectPath = path.join(process.cwd(), projectName);
+
+            if (fs.existsSync(projectPath)) {
+                console.error(`Project folder ${projectName} already exists!`);
+                process.exit(1);
+            }
 
             let project: Base | undefined;
 
@@ -44,6 +54,24 @@ export async function ViteCommands(program: Command) {
                         packageManager,
                         typescript,
                     )
+                }
+            } else if (["svelte", "svelte-ts"].includes(template)) {
+                if (ui === "shadcn") {
+                    const style = await PromptStyle();
+                    const baseColour = await PromptBaseColour();
+                    const components = await PromptComponents();
+
+                    project = new SvelteShadcn(
+                        projectName,
+                        template,
+                        packageManager,
+                        typescript,
+                        style,
+                        baseColour,
+                        components,
+                    );
+                } else if (ui === "daisy-ui") {
+                    project = new SvelteDaisyUI(projectName, template, packageManager, typescript);
                 }
             } else {
                 project = new Base(projectName, template, packageManager, typescript);

@@ -1,4 +1,4 @@
-import { select } from "@inquirer/prompts";
+import { confirm, select } from "@inquirer/prompts";
 
 export async function PromptStyle() {
     const style = await select({
@@ -27,5 +27,5 @@ export async function PromptBaseColour() {
 }
 
 export async function PromptComponents() {
-    return confirm("Do you want to add all Shadcn components?");
+    return await confirm({ message: "Do you want to add all Shadcn components?" });
 };
