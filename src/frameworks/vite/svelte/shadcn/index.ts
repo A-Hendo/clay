@@ -51,7 +51,6 @@ export class SvelteShadcn extends Vite {
         this.WriteShadcnTailwindConfig();
         this.WriteShadcnUtils();
         this.WriteShadcnTheming();
-        this.UtilsCNHelper();
 
         WriteTailwindPostcss();
     }
@@ -217,6 +216,7 @@ import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
 
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -371,17 +371,4 @@ export const flyAndScale = (
 }`
         Append("./src/app.css", data);
     };
-
-    UtilsCNHelper() {
-        if (!fs.existsSync("./src/lib"))
-            fs.mkdirSync("./src/lib");
-
-        const data = `import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-return twMerge(clsx(inputs))
-}`
-        Write("./src/lib/utils.ts", data);
-    }
 }
