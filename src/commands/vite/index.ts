@@ -54,6 +54,10 @@ export async function ViteCommands(program: Command) {
                         baseOptions.manager,
                         baseOptions.typescript,
                     )
+                } else if (baseOptions.ui === "mui") {
+                    project = new ReactMUI(
+                        baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                    );
                 }
             } else if (["svelte", "svelte-ts"].includes(template)) {
                 if (baseOptions.ui === "shadcn") {

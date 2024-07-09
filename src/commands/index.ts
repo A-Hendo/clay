@@ -41,6 +41,7 @@ export async function UIPrompts() {
         choices: [
             { name: "Shadcn", value: "shadcn" },
             { name: "Daisy UI", value: "daisy-ui" },
+            { name: "Material UI", value: "mui" },
         ]
     });
     return ui;
