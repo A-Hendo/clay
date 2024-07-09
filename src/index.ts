@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import figlet from "figlet";
+import { NextjsCommands } from "./commands/nextjs/index.js";
 import { SvelteKitCommands } from "./commands/svelte/index.js";
 import { ViteCommands } from "./commands/vite/index.js";
 
@@ -25,5 +26,7 @@ program
 SvelteKitCommands(program);
 
 ViteCommands(program);
+
+NextjsCommands(program);
 
 program.parse(process.argv);

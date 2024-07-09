@@ -27,5 +27,5 @@ export async function PromptBaseColour() {
 }
 
 export async function PromptComponents() {
-    return await confirm({ message: "Do you want to add all Shadcn components?" });
+    return await confirm({ message: "Do you want to add all Shadcn components?", default: false });
 };
