@@ -1,6 +1,7 @@
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import * as fs from "fs";
+import ora from "ora";
 import * as path from "path";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
@@ -76,7 +77,12 @@ export async function ViteCommands(program: Command) {
             } else {
                 project = new Base(projectName, template, packageManager, typescript);
             }
+            const spinner = ora(`Creating Vite ${template} project...`).start();
+            spinner.color = "green";
+
             await project?.Create();
+
+            spinner.stop();
         });
 }
 

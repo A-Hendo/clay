@@ -2,6 +2,7 @@ import { checkbox, confirm, input, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import { type Options } from "create-svelte/types/internal.js";
 import * as fs from "fs";
+import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
 import { SvelteKitDaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
@@ -92,7 +93,12 @@ export function SvelteKitCommands(program: Command) {
                 )
             }
 
+            const spinner = ora("Creating SvelteKit project...").start();
+            spinner.color = "green";
+
             await project?.Create();
+
+            spinner.stop();
         });
 };
 

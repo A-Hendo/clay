@@ -1,12 +1,14 @@
 import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
 import * as fs from "fs";
+import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
 import { DaisyUI } from "../../frameworks/nextjs/daisy-ui/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
+
 
 
 export async function NextjsCommands(program: Command) {
@@ -53,7 +55,14 @@ export async function NextjsCommands(program: Command) {
             } else if (ui === "daisy-ui") {
                 project = new DaisyUI(projectName, "default", packageManager, typescript, router, alias, eslint, src);
             }
+
+            const spinner = ora("Creating NextJs project...").start();
+            spinner.color = "green";
+
             await project?.Create();
+
+            spinner.stop();
+
         });
 }
 
