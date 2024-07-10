@@ -1,10 +1,11 @@
-import { select } from "@inquirer/prompts";
+import { input, select } from "@inquirer/prompts";
 
 
-export interface BaseOptions { manager: string, ui: string, typescript: boolean };
+export interface BaseOptions { projectName: string, manager: string, ui: string, typescript: boolean };
 
 export async function BasePrompts(): Promise<BaseOptions> {
     return {
+        projectName: await input({ message: "Project name?" }),
         manager: await ManagerPrompts(),
         typescript: await LanguagePrompt(),
         ui: await UIPrompts(),
@@ -40,6 +41,7 @@ export async function UIPrompts() {
         choices: [
             { name: "Shadcn", value: "shadcn" },
             { name: "Daisy UI", value: "daisy-ui" },
+            { name: "Material UI", value: "mui" },
         ]
     });
     return ui;

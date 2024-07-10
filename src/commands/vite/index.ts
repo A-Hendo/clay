@@ -1,11 +1,12 @@
-import { input, select } from "@inquirer/prompts";
+import { select } from "@inquirer/prompts";
 import { Command } from "commander";
 import * as fs from "fs";
 import ora from "ora";
 import * as path from "path";
-import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../../commands/index.js";
+import { BaseOptions, BasePrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
+import { ReactMUI } from "../../frameworks/vite/react/material-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
 import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
@@ -16,23 +17,21 @@ export async function ViteCommands(program: Command) {
         .command("vite")
         .description("Create a new vite project")
         .action(async () => {
-            const projectName = await input({ message: "Project name?" });
-            const typescript = await LanguagePrompt();
-            const packageManager = await ManagerPrompts();
-            const template = await ViteTemplatePrompt(typescript);
-            const ui = await UIPrompts();
+            const baseOptions: BaseOptions = await BasePrompts();
+            const template = await ViteTemplatePrompt(baseOptions.typescript);
 
-            const projectPath = path.join(process.cwd(), projectName);
+
+            const projectPath = path.join(process.cwd(), baseOptions.projectName);
 
             if (fs.existsSync(projectPath)) {
-                console.error(`Project folder ${projectName} already exists!`);
+                console.error(`Project folder ${baseOptions.projectName} already exists!`);
                 process.exit(1);
             }
 
             let project: Base | undefined;
 
             if (["react", "react-ts", "react-swc-ts", "react-swc"].includes(template)) {
-                if (ui === "shadcn") {
+                if (baseOptions.ui === "shadcn") {
 
                     const style = await PromptStyle();
                     const baseColour = await PromptBaseColour();
@@ -40,43 +39,50 @@ export async function ViteCommands(program: Command) {
 
 
                     project = new ReactShadcn(
-                        projectName,
+                        baseOptions.projectName,
                         template,
-                        packageManager,
-                        typescript,
+                        baseOptions.manager,
+                        baseOptions.typescript,
                         style,
                         baseColour,
                         components,
                     );
-                } else if (ui === "daisy-ui") {
+                } else if (baseOptions.ui === "daisy-ui") {
                     project = new ReactDaisyUI(
-                        projectName,
+                        baseOptions.projectName,
                         template,
-                        packageManager,
-                        typescript,
+                        baseOptions.manager,
+                        baseOptions.typescript,
                     )
+                } else if (baseOptions.ui === "mui") {
+                    project = new ReactMUI(
+                        baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                    );
                 }
             } else if (["svelte", "svelte-ts"].includes(template)) {
-                if (ui === "shadcn") {
+                if (baseOptions.ui === "shadcn") {
                     const style = await PromptStyle();
                     const baseColour = await PromptBaseColour();
                     const components = await PromptComponents();
 
                     project = new SvelteShadcn(
-                        projectName,
+                        baseOptions.projectName,
                         template,
-                        packageManager,
-                        typescript,
+                        baseOptions.manager,
+                        baseOptions.typescript,
                         style,
                         baseColour,
                         components,
                     );
-                } else if (ui === "daisy-ui") {
-                    project = new SvelteDaisyUI(projectName, template, packageManager, typescript);
+                } else if (baseOptions.ui === "daisy-ui") {
+                    project = new SvelteDaisyUI(
+                        baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                    );
                 }
             } else {
-                project = new Base(projectName, template, packageManager, typescript);
+                project = new Base(baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript);
             }
+
             const spinner = ora(`Creating Vite ${template} project...`).start();
             spinner.color = "green";
 
