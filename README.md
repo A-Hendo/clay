@@ -27,6 +27,8 @@ Now you can use the cli tool to interactively scaffold your project
 crejs sveltekit
 or
 crejs vite
+or
+crejs nextjs
 ```
 
 
@@ -43,6 +45,8 @@ crejs vite
 |         |           |Shadcn     | ❌    |
 |         |React      |Daisy UI   | ✔️    |
 |         |           |Shadcn     | ✔️    |
+|         |           |Next UI    | ✔️    |
+|         |           |Material UI| ✔️    |
 |         |Lit        |Daisy UI   | ❌    |
 |         |           |Shadcn     | ❌    |
 |         |Svelte     |Daisy UI   | ✔️    |
@@ -51,3 +55,6 @@ crejs vite
 |         |           |Shadcn     | ❌    |
 |         |Qwik       |Daisy UI   | ❌    |
 |         |           |Shadcn     | ❌    |
+|NextJS   |           |Daisy UI   | ✔️    |
+|         |           |Shadcn     | ✔️    |
+|         |           |Next UI    | ✔️    |
