@@ -5,6 +5,7 @@ import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
 import { DaisyUI } from "../../frameworks/nextjs/daisy-ui/index.js";
+import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
@@ -54,6 +55,8 @@ export async function NextjsCommands(program: Command) {
 
             } else if (ui === "daisy-ui") {
                 project = new DaisyUI(projectName, "default", packageManager, typescript, router, alias, eslint, src);
+            } else if (ui === "next-ui") {
+                project = new NextUI(projectName, "default", packageManager, typescript, router, alias, eslint, src);
             }
 
             const spinner = ora("Creating NextJs project...").start();
@@ -62,7 +65,6 @@ export async function NextjsCommands(program: Command) {
             await project?.Create();
 
             spinner.stop();
-
         });
 }
 

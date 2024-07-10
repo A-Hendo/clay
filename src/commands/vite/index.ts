@@ -7,6 +7,7 @@ import { BaseOptions, BasePrompts } from "../../commands/index.js";
 import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
 import { ReactMUI } from "../../frameworks/vite/react/material-ui/index.js";
+import { ReactNextUI } from "../../frameworks/vite/react/next-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
 import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
@@ -56,6 +57,10 @@ export async function ViteCommands(program: Command) {
                     )
                 } else if (baseOptions.ui === "mui") {
                     project = new ReactMUI(
+                        baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                    );
+                } else if (baseOptions.ui === "next-ui") {
+                    project = new ReactNextUI(
                         baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
                     );
                 }
