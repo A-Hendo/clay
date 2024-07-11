@@ -16,6 +16,7 @@
         "@eslint/js": "^9.5.0",
         "@types/eslint__js": "^8.42.3",
         "@types/figlet": "^1.5.8",
+        "@types/gradient-string": "^1.1.6",
         "@types/node": "^20.14.8",
         "@typescript-eslint/eslint-plugin": "^7.14.1",
         "@typescript-eslint/parser": "^7.14.1",
@@ -29,7 +30,7 @@
         "commander": "^12.1.0",
         "create-svelte": "^6.3.2",
         "execa": "^9.3.0",
-        "figlet": "^1.7.0",
+        "gradient-string": "^2.0.2",
         "ora": "^8.0.1",
         "vite": "^5.3.2"
     },

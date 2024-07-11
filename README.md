@@ -1,11 +1,11 @@
 <div align="center">
-<h1>Crejs</h1>
+<h1>Créjs</h1>
 
 **A CLI project scaffolding tool**
 
 </div>
 
-crejs enables you to start building your applications faster,
+Créjs enables you to start building your applications faster,
 from setting up a project to automatically installing a UI framework, all ready to use out-of-the-box.
 
 ## Install

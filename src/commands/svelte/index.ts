@@ -1,4 +1,6 @@
+import { ExitPromptError } from "@inquirer/core";
 import { checkbox, confirm, input, select } from "@inquirer/prompts";
+import chalk from "chalk";
 import { Command } from "commander";
 import { type Options } from "create-svelte/types/internal.js";
 import * as fs from "fs";
@@ -10,11 +12,9 @@ import { SvelteKitShadcn } from "../../frameworks/sveltekit/shadcn/index.js";
 import { BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
-type svelteOptions = Options
-
 interface shadcnOptions { style: string, baseColour: string, components: boolean }
 
-export function SvelteKitCommands(program: Command) {
+export async function SvelteKitCommands(program: Command) {
     program
         .command("sveltekit")
         .description("Create a new project")
@@ -49,56 +49,72 @@ export function SvelteKitCommands(program: Command) {
         //     new Option("-u, --ui <manager>", "Choose a UI framework")
         //         .choices(["Shadcn", "Skeleton UI", "Daisy UI", "none"])
         //         .default("none"))
-        .action(async (options: svelteOptions) => {
-            const baseOptions = await BasePrompts();
+        .action(async (options: Options) => {
+            try {
+                const baseOptions = await BasePrompts();
 
-            options = await SveltePrompts();
+                const projectPath = path.join(process.cwd(), baseOptions.projectName);
+                if (fs.existsSync(projectPath)) {
+                    console.error(chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
+                    process.exit(1);
+                }
 
-            let project: Base | undefined;
+                options = await SveltePrompts();
 
-            if (baseOptions.ui === "shadcn") {
-                const shadcn: shadcnOptions = {
-                    style: await PromptStyle(),
-                    baseColour: await PromptBaseColour(),
-                    components: await PromptComponents(),
-                };
+                let project: Base | undefined;
 
-                project = new SvelteKitShadcn(
-                    options.name,
-                    options.template,
-                    baseOptions.manager,
-                    baseOptions.typescript,
-                    options.types,
-                    options.prettier,
-                    options.eslint,
-                    options.playwright,
-                    options.vitest,
-                    options.svelte5,
-                    shadcn.style,
-                    shadcn.baseColour,
-                    shadcn.components
-                );
-            } else if (baseOptions.ui === "daisy-ui") {
-                project = new SvelteKitDaisyUI(
-                    options.name,
-                    options.template,
-                    baseOptions.manager,
-                    baseOptions.typescript,
-                    options.types,
-                    options.prettier,
-                    options.eslint,
-                    options.playwright,
-                    options.vitest,
-                    options.svelte5,
-                )
-            }
+                if (baseOptions.ui === "shadcn") {
+                    const shadcn: shadcnOptions = {
+                        style: await PromptStyle(),
+                        baseColour: await PromptBaseColour(),
+                        components: await PromptComponents(),
+                    };
 
-            const spinner = ora("Creating SvelteKit project...").start();
-            spinner.color = "green";
+                    project = new SvelteKitShadcn(
+                        baseOptions.projectName,
+                        options.template,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        options.types,
+                        options.prettier,
+                        options.eslint,
+                        options.playwright,
+                        options.vitest,
+                        options.svelte5,
+                        shadcn.style,
+                        shadcn.baseColour,
+                        shadcn.components
+                    );
+                } else if (baseOptions.ui === "daisy-ui") {
+                    project = new SvelteKitDaisyUI(
+                        baseOptions.projectName,
+                        options.template,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        options.types,
+                        options.prettier,
+                        options.eslint,
+                        options.playwright,
+                        options.vitest,
+                        options.svelte5,
+                    )
+                }
 
-            await project?.Create();
+                const spinner = ora("Creating SvelteKit project...").start();
+                spinner.color = "green";
 
-            spinner.stop();
+                await project?.Create();
+
+                spinner.stop();
+
+                console.log(chalk.green(`✔️ Project ${baseOptions.projectName} created successfully!`));
+            } catch (error) {
+                if (error instanceof ExitPromptError) {
+                    console.error(chalk.red("❌ User cancelled operation"));
+                    process.exit();
+                }
+                throw (error);
+            };
         });
 };
 
@@ -114,19 +130,10 @@ export async function SveltePrompts() {
         svelte5: false,
     };
 
-    options.name = await input({ message: "Project name?" });
-
-    const projectPath = path.join(process.cwd(), options.name);
-
-    if (fs.existsSync(projectPath)) {
-        console.error(`Project folder ${options.name} already exists!`);
-        process.exit(1);
-    }
-
     options.template = await select({
         message: "Select a project template",
         choices: [
-            { name: "Skeleton", value: "skeleton" },
+            { name: chalk.gray("Skeleton"), value: "skeleton" },
             // { name: "Skeletonlib", value: "skeletonlib" },
         ],
     });
@@ -134,19 +141,19 @@ export async function SveltePrompts() {
     options.types = await select({
         message: "Select typechecking",
         choices: [
-            { name: "Typescript", value: "typescript" },
-            { name: "Checkjs", value: "checkjs" },
-            { name: "null", value: null },
+            { name: chalk.gray("Typescript"), value: "typescript" },
+            { name: chalk.gray("Checkjs"), value: "checkjs" },
+            { name: chalk.gray("null"), value: null },
         ],
     });
 
     const choices = await checkbox({
         message: "Additional options",
         choices: [
-            { name: "Prettier", value: "prettier" },
-            { name: "ESLint", value: "eslint" },
-            { name: "Playwright", value: "playwright" },
-            { name: "Vitest", value: "vitest" },
+            { name: chalk.gray("Prettier"), value: "prettier" },
+            { name: chalk.gray("ESLint"), value: "eslint" },
+            { name: chalk.gray("Playwright"), value: "playwright" },
+            { name: chalk.gray("Vitest"), value: "vitest" },
         ]
     });
 
