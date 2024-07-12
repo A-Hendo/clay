@@ -89,7 +89,7 @@ export async function ViteCommands(program: Command) {
                         );
                     }
                 } else {
-                    project = new Base(baseOptions.name, template, baseOptions.manager, baseOptions.typescript);
+                    project = new Base(baseOptions.name, baseOptions.manager, baseOptions.typescript);
                 }
 
                 const spinner = ora(chalk.cyan(`Creating Vite ${template} project`)).start();

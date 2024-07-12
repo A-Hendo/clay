@@ -2,7 +2,6 @@ import { execa } from "execa";
 
 interface IBase {
     name: string;
-    template: string;
     typescript: boolean;
     packageManager: string;
     dependencies: string[];
@@ -14,15 +13,13 @@ interface IBase {
 
 export class Base implements IBase {
     name: string;
-    template: string;
     packageManager: string;
     typescript: boolean;
     dependencies: string[] = [];
     devDependencies: string[] = [];
 
-    constructor (name: string, template: string, packageManager: string, typescript: boolean) {
+    constructor (name: string, packageManager: string, typescript: boolean) {
         this.name = name;
-        this.template = template;
         this.packageManager = packageManager;
         this.typescript = typescript;
     }

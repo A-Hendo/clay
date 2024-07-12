@@ -21,7 +21,6 @@ export class ReactShadcn extends Vite {
         components: boolean
     ) {
         super(name, template, packageManager, typescript);
-
         this.style = style;
         this.baseColor = colour;
         this.components = components;

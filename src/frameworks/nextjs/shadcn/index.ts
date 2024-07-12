@@ -11,7 +11,6 @@ export class Shadcn extends Nextjs {
 
     constructor (
         name: string,
-        template: string,
         packageManager: string,
         typescript: boolean,
         router: boolean,
@@ -24,7 +23,6 @@ export class Shadcn extends Nextjs {
     ) {
         super(
             name,
-            template,
             packageManager,
             typescript,
             router,

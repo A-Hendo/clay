@@ -5,7 +5,6 @@ import { Nextjs } from "../index.js";
 export class MUI extends Nextjs {
     constructor (
         name: string,
-        template: string,
         packageManager: string,
         typescript: boolean,
         router: boolean,
@@ -20,7 +19,7 @@ export class MUI extends Nextjs {
             router = true;
         }
 
-        super(name, template, packageManager, typescript, router, alias, eslint, srcDir);
+        super(name, packageManager, typescript, router, alias, eslint, srcDir);
 
         this.dependencies = this.dependencies.concat(
             ["@mui/material", "@mui/material-nextjs", "@emotion/cache", "@emotion/react", "@emotion/styled"]

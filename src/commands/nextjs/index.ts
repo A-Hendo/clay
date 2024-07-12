@@ -43,7 +43,6 @@ export async function NextjsCommands(program: Command) {
                     const components = await PromptComponents();
 
                     project = new Shadcn(baseOptions.name,
-                        "default",
                         baseOptions.manager,
                         baseOptions.typescript,
                         router,
@@ -57,7 +56,6 @@ export async function NextjsCommands(program: Command) {
                 } else if (baseOptions.ui === "daisy-ui") {
                     project = new DaisyUI(
                         baseOptions.name,
-                        "default",
                         baseOptions.manager,
                         baseOptions.typescript,
                         router,
@@ -68,7 +66,6 @@ export async function NextjsCommands(program: Command) {
                 } else if (baseOptions.ui === "next-ui") {
                     project = new NextUI(
                         baseOptions.name,
-                        "default",
                         baseOptions.manager,
                         baseOptions.typescript,
                         router,
@@ -79,7 +76,6 @@ export async function NextjsCommands(program: Command) {
                 } else if (baseOptions.ui === "mui") {
                     project = new MUI(
                         baseOptions.name,
-                        "default",
                         baseOptions.manager,
                         baseOptions.typescript,
                         router,
