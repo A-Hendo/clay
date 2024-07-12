@@ -7,6 +7,7 @@ import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
 import { DaisyUI } from "../../frameworks/nextjs/daisy-ui/index.js";
+import { MUI } from "../../frameworks/nextjs/material-ui/index.js";
 import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../index.js";

@@ -14,3 +14,8 @@ export function Write(file: string, content: string) {
         if (err) throw err;
     });
 };
+
+export function Edit(file: string, callback: (content: string) => string) {
+    const content = fs.readFileSync(file, "utf-8")
+    fs.writeFileSync(file, callback(content), "utf-8")
+};
