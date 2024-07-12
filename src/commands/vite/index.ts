@@ -92,7 +92,7 @@ export async function ViteCommands(program: Command) {
                     project = new Base(baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript);
                 }
 
-                const spinner = ora(`Creating Vite ${template} project...`).start();
+                const spinner = ora(chalk.cyan(`Creating Vite ${template} project`)).start();
                 spinner.color = "green";
 
                 await project?.Create();

@@ -69,7 +69,7 @@ export async function NextjsCommands(program: Command) {
                     );
                 }
 
-                const spinner = ora("Creating NextJs project...").start();
+                const spinner = ora(chalk.cyan("Creating NextJs project")).start();
                 spinner.color = "green";
 
                 await project?.Create();

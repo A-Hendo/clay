@@ -100,7 +100,7 @@ export async function SvelteKitCommands(program: Command) {
                     )
                 }
 
-                const spinner = ora("Creating SvelteKit project...").start();
+                const spinner = ora(chalk.cyan("Creating SvelteKit project")).start();
                 spinner.color = "green";
 
                 await project?.Create();
