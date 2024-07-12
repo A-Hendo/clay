@@ -1,18 +1,27 @@
 import { ExitPromptError } from "@inquirer/core";
-import { checkbox, confirm, input, select } from "@inquirer/prompts";
 import chalk from "chalk";
 import { Command } from "commander";
-import { type Options } from "create-svelte/types/internal.js";
 import * as fs from "fs";
 import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
 import { SvelteKitDaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
 import { SvelteKitShadcn } from "../../frameworks/sveltekit/shadcn/index.js";
+import { Checkbox, Confirm, Select } from "../../utils/prompts.js";
 import { BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 interface shadcnOptions { style: string, baseColour: string, components: boolean }
+
+interface Options {
+    template: string;
+    types: string | null;
+    prettier: boolean;
+    eslint: boolean;
+    playwright: boolean;
+    vitest: boolean;
+    svelte5: boolean;
+};
 
 export async function SvelteKitCommands(program: Command) {
     program
@@ -55,7 +64,7 @@ export async function SvelteKitCommands(program: Command) {
 
                 const projectPath = path.join(process.cwd(), baseOptions.projectName);
                 if (fs.existsSync(projectPath)) {
-                    console.error(chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
                     process.exit(1);
                 }
 
@@ -107,10 +116,10 @@ export async function SvelteKitCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log(chalk.green(`✔️ Project ${baseOptions.projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${baseOptions.projectName} created successfully!`));
             } catch (error) {
                 if (error instanceof ExitPromptError) {
-                    console.error(chalk.red("❌ User cancelled operation"));
+                    console.error("❌ ", chalk.red("User cancelled operation"));
                     process.exit();
                 }
                 throw (error);
@@ -120,49 +129,45 @@ export async function SvelteKitCommands(program: Command) {
 
 export async function SveltePrompts() {
     const options: Options = {
-        name: "",
-        template: "default",
-        types: "checkjs",
+        template: "",
+        types: "",
         prettier: false,
         eslint: false,
         playwright: false,
         vitest: false,
-        svelte5: false,
-    };
+        svelte5: false
+    }
 
-    options.template = await select({
-        message: "Select a project template",
-        choices: [
-            { name: chalk.gray("Skeleton"), value: "skeleton" },
-            // { name: "Skeletonlib", value: "skeletonlib" },
+    options.template = await Select(
+        "Select a project template",
+        [{ name: "Skeleton", value: "skeleton" }],
+    );
+
+    options.types = await Select(
+        "Select typechecking",
+        [
+            { name: "Typescript", value: "typescript" },
+            { name: "Checkjs", value: "checkjs" },
+            { name: "None", value: "none" },
         ],
-    });
+    );
 
-    options.types = await select({
-        message: "Select typechecking",
-        choices: [
-            { name: chalk.gray("Typescript"), value: "typescript" },
-            { name: chalk.gray("Checkjs"), value: "checkjs" },
-            { name: chalk.gray("null"), value: null },
-        ],
-    });
-
-    const choices = await checkbox({
-        message: "Additional options",
-        choices: [
-            { name: chalk.gray("Prettier"), value: "prettier" },
-            { name: chalk.gray("ESLint"), value: "eslint" },
-            { name: chalk.gray("Playwright"), value: "playwright" },
-            { name: chalk.gray("Vitest"), value: "vitest" },
+    const choices = await Checkbox(
+        "Additional options",
+        [
+            { name: "Prettier", value: "prettier" },
+            { name: "ESLint", value: "eslint" },
+            { name: "Playwright", value: "playwright" },
+            { name: "Vitest", value: "vitest" },
         ]
-    });
+    );
 
     options.prettier = choices.includes("prettier");
     options.eslint = choices.includes("eslint");
     options.playwright = choices.includes("playwright");
     options.vitest = choices.includes("vitest");
 
-    options.svelte5 = await confirm({ message: "Use Svelte 5?" });
+    options.svelte5 = await Confirm("Use Svelte 5?");
 
     return options;
 };

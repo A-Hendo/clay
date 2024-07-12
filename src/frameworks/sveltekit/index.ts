@@ -7,8 +7,8 @@ import { Base } from "../index.js";
 
 
 export class SvelteKit extends Base {
-    template: "default" | "skeleton" | "skeletonlib" = "default";
-    types: "typescript" | "checkjs" | null;
+    template: string;
+    types: string | null;
     prettier: boolean;
     eslint: boolean;
     playwright: boolean;
@@ -17,10 +17,10 @@ export class SvelteKit extends Base {
 
     constructor (
         name: string,
-        template: "default" | "skeleton" | "skeletonlib",
+        template: string,
         packageManager: string,
         typescript: boolean,
-        types: "typescript" | "checkjs" | null,
+        types: string | null,
         prettier: boolean,
         eslint: boolean,
         playwright: boolean,
@@ -29,6 +29,7 @@ export class SvelteKit extends Base {
     ) {
 
         super(name, template, packageManager, typescript);
+        this.template = template;
         this.types = types;
         this.prettier = prettier;
         this.eslint = eslint;
@@ -52,8 +53,8 @@ export class SvelteKit extends Base {
     async CreateSvelteKit() {
         await create(this.name, {
             name: this.name,
-            template: this.template,
-            types: this.types,
+            template: this.template as "default" | "skeleton" | "skeletonlib",
+            types: this.types as "typescript" | "checkjs" | null,
             prettier: this.prettier,
             eslint: this.eslint,
             playwright: this.playwright,

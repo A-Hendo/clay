@@ -1,5 +1,4 @@
 import { ExitPromptError } from "@inquirer/core";
-import { select } from "@inquirer/prompts";
 import chalk from "chalk";
 import { Command } from "commander";
 import * as fs from "fs";
@@ -13,6 +12,7 @@ import { ReactNextUI } from "../../frameworks/vite/react/next-ui/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
 import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
+import { Choice, Select } from "../../utils/prompts.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 export async function ViteCommands(program: Command) {
@@ -29,7 +29,7 @@ export async function ViteCommands(program: Command) {
                 const projectPath = path.join(process.cwd(), baseOptions.projectName);
 
                 if (fs.existsSync(projectPath)) {
-                    console.error(chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
                     process.exit(1);
                 }
 
@@ -99,11 +99,11 @@ export async function ViteCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log(chalk.green(`✔️ Project ${baseOptions.projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${baseOptions.projectName} created successfully!`));
 
             } catch (error) {
                 if (error instanceof ExitPromptError) {
-                    console.error(chalk.red("❌ User cancelled operation"));
+                    console.error("❌ ", chalk.red("User cancelled operation"));
                     process.exit();
                 }
                 throw (error);
@@ -112,36 +112,32 @@ export async function ViteCommands(program: Command) {
 }
 
 
-function ViteTemplatePrompt(typescript: boolean) {
-    if (typescript) {
-        return select({
-            message: "Select a framework",
-            choices: [
-                { name: chalk.gray("Vanilla"), value: "vanilla-ts" },
-                { name: chalk.gray("Vue"), value: "vue-ts" },
-                { name: chalk.gray("React"), value: "react-ts" },
-                { name: chalk.gray("React-swc"), value: "react-swc-ts" },
-                { name: chalk.gray("Preract"), value: "preract-ts" },
-                { name: chalk.gray("Lit"), value: "lit-ts" },
-                { name: chalk.gray("Svelte"), value: "svelte-ts" },
-                { name: chalk.gray("Solid"), value: "solid-ts" },
-                { name: chalk.gray("Qwik"), value: "qwik-ts" },
-            ],
-        })
-    };
+async function ViteTemplatePrompt(typescript: boolean) {
+    let choices: Choice[] = [];
 
-    return select({
-        message: "Select a framework",
-        choices: [
-            { name: chalk.gray("Vanilla"), value: "vanilla" },
-            { name: chalk.gray("Vue"), value: "vue" },
-            { name: chalk.gray("React"), value: "react" },
-            { name: chalk.gray("React-swc"), value: "react-swc" },
-            { name: chalk.gray("Preract"), value: "preract" },
-            { name: chalk.gray("Lit"), value: "lit" },
-            { name: chalk.gray("Svelte"), value: "svelte" },
-            { name: chalk.gray("Solid"), value: "solid" },
-            { name: chalk.gray("Qwik"), value: "qwik" },
-        ],
-    })
+    if (typescript)
+        choices = [
+            { name: "Vanilla", value: "vanilla-ts" },
+            { name: "Vue", value: "vue-ts" },
+            { name: "React", value: "react-ts" },
+            { name: "React-swc", value: "react-swc-ts" },
+            { name: "Preract", value: "preract-ts" },
+            { name: "Lit", value: "lit-ts" },
+            { name: "Svelte", value: "svelte-ts" },
+            { name: "Solid", value: "solid-ts" },
+            { name: "Qwik", value: "qwik-ts" },
+        ]
+    else
+        choices = [
+            { name: "Vanilla", value: "vanilla" },
+            { name: "Vue", value: "vue" },
+            { name: "React", value: "react" },
+            { name: "React-swc", value: "react-swc" },
+            { name: "Preract", value: "preract" },
+            { name: "Lit", value: "lit" },
+            { name: "Svelte", value: "svelte" },
+            { name: "Solid", value: "solid" },
+            { name: "Qwik", value: "qwik" },
+        ]
+    return await Select("Select a framework", choices);
 };
