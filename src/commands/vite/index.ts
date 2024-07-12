@@ -26,10 +26,10 @@ export async function ViteCommands(program: Command) {
                 const template = await ViteTemplatePrompt(baseOptions.typescript);
 
 
-                const projectPath = path.join(process.cwd(), baseOptions.projectName);
+                const projectPath = path.join(process.cwd(), baseOptions.name);
 
                 if (fs.existsSync(projectPath)) {
-                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.name} already exists!`));
                     process.exit(1);
                 }
 
@@ -44,7 +44,7 @@ export async function ViteCommands(program: Command) {
 
 
                         project = new ReactShadcn(
-                            baseOptions.projectName,
+                            baseOptions.name,
                             template,
                             baseOptions.manager,
                             baseOptions.typescript,
@@ -54,18 +54,18 @@ export async function ViteCommands(program: Command) {
                         );
                     } else if (baseOptions.ui === "daisy-ui") {
                         project = new ReactDaisyUI(
-                            baseOptions.projectName,
+                            baseOptions.name,
                             template,
                             baseOptions.manager,
                             baseOptions.typescript,
                         )
                     } else if (baseOptions.ui === "mui") {
                         project = new ReactMUI(
-                            baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                            baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
                     } else if (baseOptions.ui === "next-ui") {
                         project = new ReactNextUI(
-                            baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                            baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
                     }
                 } else if (["svelte", "svelte-ts"].includes(template)) {
@@ -75,7 +75,7 @@ export async function ViteCommands(program: Command) {
                         const components = await PromptComponents();
 
                         project = new SvelteShadcn(
-                            baseOptions.projectName,
+                            baseOptions.name,
                             template,
                             baseOptions.manager,
                             baseOptions.typescript,
@@ -85,11 +85,11 @@ export async function ViteCommands(program: Command) {
                         );
                     } else if (baseOptions.ui === "daisy-ui") {
                         project = new SvelteDaisyUI(
-                            baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript
+                            baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
                     }
                 } else {
-                    project = new Base(baseOptions.projectName, template, baseOptions.manager, baseOptions.typescript);
+                    project = new Base(baseOptions.name, template, baseOptions.manager, baseOptions.typescript);
                 }
 
                 const spinner = ora(chalk.cyan(`Creating Vite ${template} project`)).start();
@@ -99,7 +99,7 @@ export async function ViteCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log("✔️ ", chalk.green(`Project ${baseOptions.projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${baseOptions.name} created successfully!`));
 
             } catch (error) {
                 if (error instanceof ExitPromptError) {

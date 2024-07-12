@@ -1,11 +1,11 @@
 import { Choice, Input, Select } from "../utils/prompts.js";
 
 
-export interface BaseOptions { projectName: string, manager: string, ui: string, typescript: boolean };
+export interface BaseOptions { name: string, manager: string, ui: string, typescript: boolean };
 
 export async function BasePrompts(): Promise<BaseOptions> {
     return {
-        projectName: await Input("Project name?"),
+        name: await Input("Project name?"),
         manager: await ManagerPrompts(),
         typescript: await LanguagePrompt(),
         ui: await UIPrompts(),
