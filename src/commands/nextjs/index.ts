@@ -68,6 +68,10 @@ export async function NextjsCommands(program: Command) {
                     project = new NextUI(
                         projectName, "default", packageManager, typescript, router, alias, eslint, src
                     );
+                } else if (ui === "mui") {
+                    project = new MUI(
+                        projectName, "default", packageManager, typescript, router, alias, eslint, src
+                    )
                 }
 
                 const spinner = ora(chalk.cyan("Creating NextJs project")).start();
