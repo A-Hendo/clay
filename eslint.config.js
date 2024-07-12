@@ -15,5 +15,8 @@ export default tseslint.config(
             "max-len": ["error", 120],
             "function-paren-newline": ["error", "consistent"],
         }
+    },
+    {
+        ignores: ["dist/**", "node_modules/**"],
     }
 );

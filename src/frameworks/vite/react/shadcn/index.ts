@@ -195,21 +195,6 @@ plugins: [require("tailwindcss-animate")],
         Write(`./tailwind.config.js`, data);
     };
 
-
-    async InstallShadcnDependencies(packageManager: string | undefined, style: string, components: boolean) {
-        const PROJECT_DEPENDENCIES: string[] = ["tailwindcss-animate", "class-variance-authority", "clsx", "tailwind-merge", `${style === "default" ? "lucide-react" : "@radix-ui/react-icons"}`];
-
-        if (packageManager === "npm") {
-            await execa("npm", ["install"].concat(PROJECT_DEPENDENCIES));
-        } else if (packageManager === "yarn") {
-            await execa("yarn", ["add"].concat(PROJECT_DEPENDENCIES));
-        }
-
-        if (components)
-            await execa("npx", ["shadcn-ui@latest", "add", "-a", "-y"]);
-    }
-
-
     UtilsCNHelper() {
         if (!fs.existsSync("./src/lib"))
             fs.mkdirSync("./src/lib");

@@ -1,5 +1,4 @@
 import { execa } from "execa";
-import * as fs from "fs";
 import { WriteTailwindPostcss } from "../../../../ui/tailwind/index.js";
 import { Append, Write } from "../../../../utils/file.js";
 import { Vite } from "../../index.js";
