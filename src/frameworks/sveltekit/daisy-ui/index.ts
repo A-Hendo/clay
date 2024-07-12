@@ -3,7 +3,7 @@ import { Write } from "../../../utils/file.js";
 import { SvelteKit } from "../index.js";
 
 
-export class SvelteKitDaisyUI extends SvelteKit {
+export class DaisyUI extends SvelteKit {
 
     constructor (
         name: string,

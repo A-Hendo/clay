@@ -4,7 +4,7 @@ import { Write } from "../../../utils/file.js";
 import { SvelteKit } from "../index.js";
 
 
-export class SvelteKitShadcn extends SvelteKit {
+export class Shadcn extends SvelteKit {
     style: string;
     baseColor: string;
     components: boolean;
