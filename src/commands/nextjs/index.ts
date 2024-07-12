@@ -1,5 +1,4 @@
 import { ExitPromptError } from "@inquirer/core";
-import { confirm, input } from "@inquirer/prompts";
 import chalk from "chalk";
 import { Command } from "commander";
 import * as fs from "fs";
@@ -10,6 +9,7 @@ import { DaisyUI } from "../../frameworks/nextjs/daisy-ui/index.js";
 import { MUI } from "../../frameworks/nextjs/material-ui/index.js";
 import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
+import { Confirm, Input } from "../../utils/prompts.js";
 import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
@@ -22,9 +22,7 @@ export async function NextjsCommands(program: Command) {
         .action(async () => {
             try {
 
-                const projectName = await input(
-                    { message: "Project name?", transformer: (value) => chalk.magenta(value) }
-                );
+                const projectName = await Input("Project name?");
                 const typescript = await LanguagePrompt();
                 const packageManager = await ManagerPrompts();
                 const ui = await UIPrompts();
@@ -37,7 +35,7 @@ export async function NextjsCommands(program: Command) {
                 const projectPath = path.join(process.cwd(), projectName);
 
                 if (fs.existsSync(projectPath)) {
-                    console.error(chalk.red(`Project folder ${projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${projectName} already exists!`));
                     process.exit(1);
                 }
 
@@ -81,11 +79,11 @@ export async function NextjsCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log(chalk.green(`✔️ Project ${projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${projectName} created successfully!`));
             }
             catch (error) {
                 if (error instanceof ExitPromptError) {
-                    console.error(chalk.red("❌ User cancelled operation"));
+                    console.error("❌ ", chalk.red("User cancelled operation"));
                     process.exit();
                 }
                 throw (error);
@@ -95,32 +93,25 @@ export async function NextjsCommands(program: Command) {
 }
 
 async function EslintPrompt() {
-    return await confirm({ message: "Enable ESLint?", transformer: (value) => chalk.magenta(value) });
+    return await Confirm("Enable ESLint?");
 }
 
 async function RouterPrompt() {
-    return await confirm({ message: "Use App Router?", transformer: (value) => chalk.magenta(value) });
+    return await Confirm("Use App Router?");
 }
 
 async function ImportAliasPrompt() {
 
-    const change = await confirm({
-        message: "Change default import alias ('@/*')?",
-        default: false,
-        transformer: (value) => chalk.magenta(value)
-    });
+    const change = await Confirm("Change default import alias ('@/*')?", false);
 
     if (!change)
         return "@/*"
 
-    const alias = await input({
-        message: "Change default import alias ('@/*')?",
-        transformer: (value) => chalk.magenta(value)
-    });
+    const alias = await Input("Change default import alias ('@/*')?");
 
     return alias === "" ? "@/*" : alias;
 }
 
 async function SrcDirPrompt() {
-    return await confirm({ message: "Use src directory?", transformer: (value) => chalk.magenta(value) });
+    return await Confirm("Use src directory?");
 }

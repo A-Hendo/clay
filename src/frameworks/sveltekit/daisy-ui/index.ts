@@ -7,10 +7,10 @@ export class SvelteKitDaisyUI extends SvelteKit {
 
     constructor (
         name: string,
-        template: "default" | "skeleton" | "skeletonlib",
+        template: string,
         packageManager: string,
         typescript: boolean,
-        types: "typescript" | "checkjs" | null,
+        types: string | null,
         prettier: boolean,
         eslint: boolean,
         playwright: boolean,

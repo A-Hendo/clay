@@ -1,36 +1,25 @@
-import { confirm, select } from "@inquirer/prompts";
-import chalk from "chalk";
+import { Choice, Confirm, Select } from "../../../utils/prompts.js";
 
 export async function PromptStyle() {
-    const style = await select({
-        message: "Select a style",
-        choices: [
-            { name: chalk.gray("Default"), value: "default" },
-            { name: chalk.gray("New York"), value: "new-york" },
-        ]
-    });
-
-    return style;
+    const choices: Choice[] = [
+        { name: "Default", value: "default" },
+        { name: "New York", value: "new-york" },
+    ]
+    return await Select("Select a style", choices);
 }
 
 export async function PromptBaseColour() {
-    const baseColor = await select({
-        message: "Select a base colour",
-        choices: [
-            { name: chalk.gray("Gray"), value: "gray" },
-            { name: chalk.gray("Neutral"), value: "neutral" },
-            { name: chalk.gray("Slate"), value: "slate" },
-            { name: chalk.gray("Zinc"), value: "zinc" },
-            { name: chalk.gray("Stone"), value: "stone" },
-        ]
-    });
-    return baseColor;
+    const choices: Choice[] = [
+        { name: "Gray", value: "gray" },
+        { name: "Neutral", value: "neutral" },
+        { name: "Slate", value: "slate" },
+        { name: "Zinc", value: "zinc" },
+        { name: "Stone", value: "stone" },
+    ];
+
+    return await Select("Select a base colour", choices);
 }
 
 export async function PromptComponents() {
-    return await confirm({
-        message: "Do you want to add all Shadcn components?",
-        default: false,
-        transformer: (value) => chalk.magenta(value)
-    });
+    return await Confirm("Do you want to add all Shadcn components?", false);
 };
