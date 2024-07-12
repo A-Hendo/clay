@@ -10,7 +10,7 @@ import { MUI } from "../../frameworks/nextjs/material-ui/index.js";
 import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
 import { Confirm, Input } from "../../utils/prompts.js";
-import { LanguagePrompt, ManagerPrompts, UIPrompts } from "../index.js";
+import { BaseOptions, BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
 
@@ -21,35 +21,30 @@ export async function NextjsCommands(program: Command) {
         .description("Create a new nextjs project")
         .action(async () => {
             try {
-
-                const projectName = await Input("Project name?");
-                const typescript = await LanguagePrompt();
-                const packageManager = await ManagerPrompts();
-                const ui = await UIPrompts();
+                const baseOptions: BaseOptions = await BasePrompts();
 
                 const eslint = await EslintPrompt();
                 const router = await RouterPrompt();
                 const alias = await ImportAliasPrompt();
                 const src = await SrcDirPrompt();
 
-                const projectPath = path.join(process.cwd(), projectName);
+                const projectPath = path.join(process.cwd(), baseOptions.name);
 
                 if (fs.existsSync(projectPath)) {
-                    console.error("❌ ", chalk.red(`Project folder ${projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.name} already exists!`));
                     process.exit(1);
                 }
 
                 let project: Base | undefined;
 
-                if (ui === "shadcn") {
+                if (baseOptions.ui === "shadcn") {
                     const style = await PromptStyle();
                     const baseColour = await PromptBaseColour();
                     const components = await PromptComponents();
 
-                    project = new Shadcn(projectName,
-                        "default",
-                        packageManager,
-                        typescript,
+                    project = new Shadcn(baseOptions.name,
+                        baseOptions.manager,
+                        baseOptions.typescript,
                         router,
                         alias,
                         eslint,
@@ -58,17 +53,35 @@ export async function NextjsCommands(program: Command) {
                         baseColour,
                         components);
 
-                } else if (ui === "daisy-ui") {
+                } else if (baseOptions.ui === "daisy-ui") {
                     project = new DaisyUI(
-                        projectName, "default", packageManager, typescript, router, alias, eslint, src
+                        baseOptions.name,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        router,
+                        alias,
+                        eslint,
+                        src
                     );
-                } else if (ui === "next-ui") {
+                } else if (baseOptions.ui === "next-ui") {
                     project = new NextUI(
-                        projectName, "default", packageManager, typescript, router, alias, eslint, src
+                        baseOptions.name,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        router,
+                        alias,
+                        eslint,
+                        src
                     );
-                } else if (ui === "mui") {
+                } else if (baseOptions.ui === "mui") {
                     project = new MUI(
-                        projectName, "default", packageManager, typescript, router, alias, eslint, src
+                        baseOptions.name,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        router,
+                        alias,
+                        eslint,
+                        src
                     )
                 }
 
@@ -79,7 +92,7 @@ export async function NextjsCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log("✔️ ", chalk.green(`Project ${projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${baseOptions.name} created successfully!`));
             }
             catch (error) {
                 if (error instanceof ExitPromptError) {

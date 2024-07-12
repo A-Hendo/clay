@@ -4,7 +4,6 @@ import { Vite } from "../../index.js";
 
 
 export class SvelteDaisyUI extends Vite {
-
     constructor (
         name: string,
         template: string,

@@ -62,9 +62,9 @@ export async function SvelteKitCommands(program: Command) {
             try {
                 const baseOptions = await BasePrompts();
 
-                const projectPath = path.join(process.cwd(), baseOptions.projectName);
+                const projectPath = path.join(process.cwd(), baseOptions.name);
                 if (fs.existsSync(projectPath)) {
-                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.projectName} already exists!`));
+                    console.error("❌ ", chalk.red(`Project folder ${baseOptions.name} already exists!`));
                     process.exit(1);
                 }
 
@@ -80,7 +80,7 @@ export async function SvelteKitCommands(program: Command) {
                     };
 
                     project = new SvelteKitShadcn(
-                        baseOptions.projectName,
+                        baseOptions.name,
                         options.template,
                         baseOptions.manager,
                         baseOptions.typescript,
@@ -96,7 +96,7 @@ export async function SvelteKitCommands(program: Command) {
                     );
                 } else if (baseOptions.ui === "daisy-ui") {
                     project = new SvelteKitDaisyUI(
-                        baseOptions.projectName,
+                        baseOptions.name,
                         options.template,
                         baseOptions.manager,
                         baseOptions.typescript,
@@ -116,7 +116,7 @@ export async function SvelteKitCommands(program: Command) {
 
                 spinner.stop();
 
-                console.log("✔️ ", chalk.green(`Project ${baseOptions.projectName} created successfully!`));
+                console.log("✔️ ", chalk.green(`Project ${baseOptions.name} created successfully!`));
             } catch (error) {
                 if (error instanceof ExitPromptError) {
                     console.error("❌ ", chalk.red("User cancelled operation"));

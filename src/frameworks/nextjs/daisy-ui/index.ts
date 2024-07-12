@@ -5,7 +5,6 @@ import { Nextjs } from "../index.js";
 export class DaisyUI extends Nextjs {
     constructor (
         name: string,
-        template: string,
         packageManager: string,
         typescript: boolean,
         router: boolean,
@@ -13,7 +12,7 @@ export class DaisyUI extends Nextjs {
         eslint: boolean,
         srcDir: boolean,
     ) {
-        super(name, template, packageManager, typescript, router, alias, eslint, srcDir);
+        super(name, packageManager, typescript, router, alias, eslint, srcDir);
         this.dependencies.push("daisyui");
         this.devDependencies = this.devDependencies.concat(["tailwindcss", "postcss", "autoprefixer"]);
     }

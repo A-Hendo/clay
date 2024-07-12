@@ -3,6 +3,13 @@ import * as path from "path";
 import { Base } from "../index.js";
 
 export class Vite extends Base {
+    template: string;
+
+    constructor (name: string, template: string, packageManager: string, typescript: boolean) {
+        super(name, packageManager, typescript);
+        this.template = template;
+    }
+
     async CreateVite() {
         if (this.packageManager === "npm") {
             await execa("npm", ["create", "vite@latest", this.name, "--", "--template", this.template]);

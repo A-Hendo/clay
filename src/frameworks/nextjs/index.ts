@@ -10,7 +10,6 @@ export class Nextjs extends Base {
 
     constructor (
         name: string,
-        template: string,
         packageManager: string,
         typescript: boolean,
         router: boolean,
@@ -18,7 +17,7 @@ export class Nextjs extends Base {
         eslint: boolean,
         srcDir: boolean,
     ) {
-        super(name, template, packageManager, typescript);
+        super(name, packageManager, typescript);
         this.router = router;
         this.alias = alias;
         this.eslint = eslint;

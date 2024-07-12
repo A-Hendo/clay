@@ -28,7 +28,7 @@ export class SvelteKit extends Base {
         svelte5: boolean | undefined,
     ) {
 
-        super(name, template, packageManager, typescript);
+        super(name, packageManager, typescript);
         this.template = template;
         this.types = types;
         this.prettier = prettier;
