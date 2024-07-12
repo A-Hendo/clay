@@ -58,3 +58,4 @@ crejs nextjs
 |NextJS   |           |Daisy UI   | ✔️    |
 |         |           |Shadcn     | ✔️    |
 |         |           |Next UI    | ✔️    |
+|         |           |Material UI| ✔️    |
