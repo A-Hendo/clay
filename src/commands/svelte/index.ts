@@ -5,8 +5,9 @@ import * as fs from "fs";
 import ora from "ora";
 import * as path from "path";
 import { Base } from "../../frameworks/index.js";
-import { SvelteKitDaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
-import { SvelteKitShadcn } from "../../frameworks/sveltekit/shadcn/index.js";
+import { DaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
+import { Shadcn } from "../../frameworks/sveltekit/shadcn/index.js";
+import { SkeletonUI } from "../../frameworks/sveltekit/skeleton-ui/index.js";
 import { Checkbox, Confirm, Select } from "../../utils/prompts.js";
 import { BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
@@ -79,7 +80,7 @@ export async function SvelteKitCommands(program: Command) {
                         components: await PromptComponents(),
                     };
 
-                    project = new SvelteKitShadcn(
+                    project = new Shadcn(
                         baseOptions.name,
                         options.template,
                         baseOptions.manager,
@@ -95,7 +96,7 @@ export async function SvelteKitCommands(program: Command) {
                         shadcn.components
                     );
                 } else if (baseOptions.ui === "daisy-ui") {
-                    project = new SvelteKitDaisyUI(
+                    project = new DaisyUI(
                         baseOptions.name,
                         options.template,
                         baseOptions.manager,
@@ -107,6 +108,20 @@ export async function SvelteKitCommands(program: Command) {
                         options.vitest,
                         options.svelte5,
                     )
+                } else if (baseOptions.ui === "skeleton-ui") {
+                    project = new SkeletonUI(
+                        baseOptions.name,
+                        options.template,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        options.types,
+                        options.prettier,
+                        options.eslint,
+                        options.playwright,
+                        options.vitest,
+                        options.svelte5,
+                    )
+
                 }
 
                 const spinner = ora(chalk.cyan("Creating SvelteKit project")).start();
