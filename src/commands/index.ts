@@ -38,6 +38,7 @@ export async function UIPrompts() {
         { name: "Material UI", value: "mui" },
         { name: "Next UI", value: "next-ui" },
         { name: "Skeleton UI", value: "skeleton-ui" },
+        { name: "PrimeReact", value: "primereact" },
     ]
 
     return await Select("Choose a UI framework", choices);
