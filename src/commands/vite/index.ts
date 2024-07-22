@@ -9,6 +9,7 @@ import { Base } from "../../frameworks/index.js";
 import { ReactDaisyUI } from "../../frameworks/vite/react/daisy-ui/index.js";
 import { ReactMUI } from "../../frameworks/vite/react/material-ui/index.js";
 import { ReactNextUI } from "../../frameworks/vite/react/next-ui/index.js";
+import { PrimeReact } from "../../frameworks/vite/react/primereact/index.js";
 import { ReactShadcn } from "../../frameworks/vite/react/shadcn/index.js";
 import { SvelteDaisyUI } from "../../frameworks/vite/svelte/daisy-ui/index.js";
 import { SvelteShadcn } from "../../frameworks/vite/svelte/shadcn/index.js";
@@ -67,6 +68,10 @@ export async function ViteCommands(program: Command) {
                         project = new ReactNextUI(
                             baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
+                    } else if (baseOptions.ui === "primereact") {
+                        project = new PrimeReact(
+                            baseOptions.name, template, baseOptions.manager, baseOptions.typescript
+                        )
                     }
                 } else if (["svelte", "svelte-ts"].includes(template)) {
                     if (baseOptions.ui === "shadcn") {

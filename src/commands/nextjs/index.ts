@@ -8,6 +8,7 @@ import { Base } from "../../frameworks/index.js";
 import { DaisyUI } from "../../frameworks/nextjs/daisy-ui/index.js";
 import { MUI } from "../../frameworks/nextjs/material-ui/index.js";
 import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
+import { PrimeReact } from "../../frameworks/nextjs/primereact/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
 import { Confirm, Input } from "../../utils/prompts.js";
 import { BaseOptions, BasePrompts } from "../index.js";
@@ -83,6 +84,16 @@ export async function NextjsCommands(program: Command) {
                         eslint,
                         src
                     )
+                } else if (baseOptions.ui === "primereact") {
+                    project = new PrimeReact(
+                        baseOptions.name,
+                        baseOptions.manager,
+                        baseOptions.typescript,
+                        router,
+                        alias,
+                        eslint,
+                        src
+                    );
                 }
 
                 const spinner = ora(chalk.cyan("Creating NextJs project")).start();
