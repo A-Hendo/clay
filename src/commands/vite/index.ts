@@ -26,7 +26,6 @@ export async function ViteCommands(program: Command) {
                 const baseOptions: BaseOptions = await BasePrompts();
                 const template = await ViteTemplatePrompt(baseOptions.typescript);
 
-
                 const projectPath = path.join(process.cwd(), baseOptions.name);
 
                 if (fs.existsSync(projectPath)) {
@@ -37,7 +36,18 @@ export async function ViteCommands(program: Command) {
                 let project: Base | undefined;
 
                 if (["react", "react-ts", "react-swc-ts", "react-swc"].includes(template)) {
-                    if (baseOptions.ui === "shadcn") {
+                    const choices: Choice[] = [
+                        { name: "Shadcn", value: "shadcn" },
+                        { name: "Daisy UI", value: "daisy-ui" },
+                        { name: "Material UI", value: "mui" },
+                        { name: "Next UI", value: "next-ui" },
+                        { name: "Skeleton UI", value: "skeleton-ui" },
+                        { name: "PrimeReact", value: "primereact" },
+                    ]
+
+                    const ui = await Select("Choose a UI framework", choices);
+
+                    if (ui === "shadcn") {
 
                         const style = await PromptStyle();
                         const baseColour = await PromptBaseColour();
@@ -53,28 +63,35 @@ export async function ViteCommands(program: Command) {
                             baseColour,
                             components,
                         );
-                    } else if (baseOptions.ui === "daisy-ui") {
+                    } else if (ui === "daisy-ui") {
                         project = new ReactDaisyUI(
                             baseOptions.name,
                             template,
                             baseOptions.manager,
                             baseOptions.typescript,
                         )
-                    } else if (baseOptions.ui === "mui") {
+                    } else if (ui === "mui") {
                         project = new ReactMUI(
                             baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
-                    } else if (baseOptions.ui === "next-ui") {
+                    } else if (ui === "next-ui") {
                         project = new ReactNextUI(
                             baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );
-                    } else if (baseOptions.ui === "primereact") {
+                    } else if (ui === "primereact") {
                         project = new PrimeReact(
                             baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         )
                     }
                 } else if (["svelte", "svelte-ts"].includes(template)) {
-                    if (baseOptions.ui === "shadcn") {
+                    const choices: Choice[] = [
+                        { name: "Shadcn", value: "shadcn" },
+                        { name: "Daisy UI", value: "daisy-ui" },
+                    ]
+
+                    const ui = await Select("Choose a UI framework", choices);
+
+                    if (ui === "shadcn") {
                         const style = await PromptStyle();
                         const baseColour = await PromptBaseColour();
                         const components = await PromptComponents();
@@ -88,7 +105,7 @@ export async function ViteCommands(program: Command) {
                             baseColour,
                             components,
                         );
-                    } else if (baseOptions.ui === "daisy-ui") {
+                    } else if (ui === "daisy-ui") {
                         project = new SvelteDaisyUI(
                             baseOptions.name, template, baseOptions.manager, baseOptions.typescript
                         );

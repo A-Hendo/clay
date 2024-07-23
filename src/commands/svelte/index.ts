@@ -8,7 +8,7 @@ import { Base } from "../../frameworks/index.js";
 import { DaisyUI } from "../../frameworks/sveltekit/daisy-ui/index.js";
 import { Shadcn } from "../../frameworks/sveltekit/shadcn/index.js";
 import { SkeletonUI } from "../../frameworks/sveltekit/skeleton-ui/index.js";
-import { Checkbox, Confirm, Select } from "../../utils/prompts.js";
+import { Checkbox, Choice, Confirm, Select } from "../../utils/prompts.js";
 import { BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
@@ -62,6 +62,7 @@ export async function SvelteKitCommands(program: Command) {
         .action(async (options: Options) => {
             try {
                 const baseOptions = await BasePrompts();
+                const ui = await UIPrompts();
 
                 const projectPath = path.join(process.cwd(), baseOptions.name);
                 if (fs.existsSync(projectPath)) {
@@ -73,7 +74,7 @@ export async function SvelteKitCommands(program: Command) {
 
                 let project: Base | undefined;
 
-                if (baseOptions.ui === "shadcn") {
+                if (ui === "shadcn") {
                     const shadcn: shadcnOptions = {
                         style: await PromptStyle(),
                         baseColour: await PromptBaseColour(),
@@ -95,7 +96,7 @@ export async function SvelteKitCommands(program: Command) {
                         shadcn.baseColour,
                         shadcn.components
                     );
-                } else if (baseOptions.ui === "daisy-ui") {
+                } else if (ui === "daisy-ui") {
                     project = new DaisyUI(
                         baseOptions.name,
                         options.template,
@@ -108,7 +109,7 @@ export async function SvelteKitCommands(program: Command) {
                         options.vitest,
                         options.svelte5,
                     )
-                } else if (baseOptions.ui === "skeleton-ui") {
+                } else if (ui === "skeleton-ui") {
                     project = new SkeletonUI(
                         baseOptions.name,
                         options.template,
@@ -187,3 +188,12 @@ export async function SveltePrompts() {
     return options;
 };
 
+async function UIPrompts() {
+    const choices: Choice[] = [
+        { name: "Shadcn", value: "shadcn" },
+        { name: "Daisy UI", value: "daisy-ui" },
+        { name: "Skeleton UI", value: "skeleton-ui" },
+    ]
+
+    return await Select("Choose a UI framework", choices);
+};

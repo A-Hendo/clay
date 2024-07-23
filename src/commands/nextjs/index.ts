@@ -10,7 +10,7 @@ import { MUI } from "../../frameworks/nextjs/material-ui/index.js";
 import { NextUI } from "../../frameworks/nextjs/next-ui/index.js";
 import { PrimeReact } from "../../frameworks/nextjs/primereact/index.js";
 import { Shadcn } from "../../frameworks/nextjs/shadcn/index.js";
-import { Confirm, Input } from "../../utils/prompts.js";
+import { Choice, Confirm, Input, Select } from "../../utils/prompts.js";
 import { BaseOptions, BasePrompts } from "../index.js";
 import { PromptBaseColour, PromptComponents, PromptStyle } from "../prompts/shadcn/index.js";
 
@@ -24,6 +24,7 @@ export async function NextjsCommands(program: Command) {
             try {
                 const baseOptions: BaseOptions = await BasePrompts();
 
+                const ui = await UIPrompts();
                 const eslint = await EslintPrompt();
                 const router = await RouterPrompt();
                 const alias = await ImportAliasPrompt();
@@ -38,7 +39,7 @@ export async function NextjsCommands(program: Command) {
 
                 let project: Base | undefined;
 
-                if (baseOptions.ui === "shadcn") {
+                if (ui === "shadcn") {
                     const style = await PromptStyle();
                     const baseColour = await PromptBaseColour();
                     const components = await PromptComponents();
@@ -54,7 +55,7 @@ export async function NextjsCommands(program: Command) {
                         baseColour,
                         components);
 
-                } else if (baseOptions.ui === "daisy-ui") {
+                } else if (ui === "daisy-ui") {
                     project = new DaisyUI(
                         baseOptions.name,
                         baseOptions.manager,
@@ -64,7 +65,7 @@ export async function NextjsCommands(program: Command) {
                         eslint,
                         src
                     );
-                } else if (baseOptions.ui === "next-ui") {
+                } else if (ui === "next-ui") {
                     project = new NextUI(
                         baseOptions.name,
                         baseOptions.manager,
@@ -74,7 +75,7 @@ export async function NextjsCommands(program: Command) {
                         eslint,
                         src
                     );
-                } else if (baseOptions.ui === "mui") {
+                } else if (ui === "mui") {
                     project = new MUI(
                         baseOptions.name,
                         baseOptions.manager,
@@ -84,7 +85,7 @@ export async function NextjsCommands(program: Command) {
                         eslint,
                         src
                     )
-                } else if (baseOptions.ui === "primereact") {
+                } else if (ui === "primereact") {
                     project = new PrimeReact(
                         baseOptions.name,
                         baseOptions.manager,
@@ -139,3 +140,15 @@ async function ImportAliasPrompt() {
 async function SrcDirPrompt() {
     return await Confirm("Use src directory?");
 }
+
+async function UIPrompts() {
+    const choices: Choice[] = [
+        { name: "Shadcn", value: "shadcn" },
+        { name: "Daisy UI", value: "daisy-ui" },
+        { name: "Material UI", value: "mui" },
+        { name: "Next UI", value: "next-ui" },
+        { name: "PrimeReact", value: "primereact" },
+    ]
+
+    return await Select("Choose a UI framework", choices);
+};
