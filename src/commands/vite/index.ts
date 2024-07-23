@@ -139,27 +139,27 @@ async function ViteTemplatePrompt(typescript: boolean) {
 
     if (typescript)
         choices = [
-            { name: "Vanilla", value: "vanilla-ts" },
-            { name: "Vue", value: "vue-ts" },
+            // { name: "Vanilla", value: "vanilla-ts" },
+            // { name: "Vue", value: "vue-ts" },
             { name: "React", value: "react-ts" },
             { name: "React-swc", value: "react-swc-ts" },
-            { name: "Preract", value: "preract-ts" },
-            { name: "Lit", value: "lit-ts" },
+            // { name: "Preract", value: "preract-ts" },
+            // { name: "Lit", value: "lit-ts" },
             { name: "Svelte", value: "svelte-ts" },
-            { name: "Solid", value: "solid-ts" },
-            { name: "Qwik", value: "qwik-ts" },
+            // { name: "Solid", value: "solid-ts" },
+            // { name: "Qwik", value: "qwik-ts" },
         ]
     else
         choices = [
-            { name: "Vanilla", value: "vanilla" },
-            { name: "Vue", value: "vue" },
+            // { name: "Vanilla", value: "vanilla" },
+            // { name: "Vue", value: "vue" },
             { name: "React", value: "react" },
             { name: "React-swc", value: "react-swc" },
-            { name: "Preract", value: "preract" },
-            { name: "Lit", value: "lit" },
+            // { name: "Preract", value: "preract" },
+            // { name: "Lit", value: "lit" },
             { name: "Svelte", value: "svelte" },
-            { name: "Solid", value: "solid" },
-            { name: "Qwik", value: "qwik" },
+            // { name: "Solid", value: "solid" },
+            // { name: "Qwik", value: "qwik" },
         ]
     return await Select("Select a framework", choices);
 };
