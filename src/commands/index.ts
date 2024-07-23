@@ -1,14 +1,13 @@
 import { Choice, Input, Select } from "../utils/prompts.js";
 
 
-export interface BaseOptions { name: string, manager: string, ui: string, typescript: boolean };
+export interface BaseOptions { name: string, manager: string, typescript: boolean };
 
 export async function BasePrompts(): Promise<BaseOptions> {
     return {
         name: await Input("Project name?"),
         manager: await ManagerPrompts(),
         typescript: await LanguagePrompt(),
-        ui: await UIPrompts(),
     }
 }
 
@@ -30,16 +29,3 @@ export async function LanguagePrompt() {
 
     return lang === "ts" ? true : false
 }
-
-export async function UIPrompts() {
-    const choices: Choice[] = [
-        { name: "Shadcn", value: "shadcn" },
-        { name: "Daisy UI", value: "daisy-ui" },
-        { name: "Material UI", value: "mui" },
-        { name: "Next UI", value: "next-ui" },
-        { name: "Skeleton UI", value: "skeleton-ui" },
-        { name: "PrimeReact", value: "primereact" },
-    ]
-
-    return await Select("Choose a UI framework", choices);
-};

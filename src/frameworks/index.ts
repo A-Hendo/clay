@@ -25,7 +25,7 @@ export class Base implements IBase {
     }
 
     async Create() {
-        console.error("Cannot create a new project from the base class, use a subclass instead.");
+        console.error("Cannot create a new project, selection may not be implemented");
     }
 
     async InstallDependencies() {
