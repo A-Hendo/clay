@@ -39,6 +39,7 @@ crejs nextjs
 |---------|-----------|-----------|:-----:|
 |SvelteKit|           |Daisy UI   | ✔️    |
 |         |           |Shadcn     | ✔️    |
+|         |           |Skeleton UI| ✔️    |
 |Vite     |Vanilla    |Daisy UI   | ❌    |
 |         |           |Shadcn     | ❌    |
 |         |Vue        |Daisy UI   | ❌    |
@@ -47,6 +48,7 @@ crejs nextjs
 |         |           |Shadcn     | ✔️    |
 |         |           |Next UI    | ✔️    |
 |         |           |Material UI| ✔️    |
+|         |           |PrimeReact | ✔️    |
 |         |Lit        |Daisy UI   | ❌    |
 |         |           |Shadcn     | ❌    |
 |         |Svelte     |Daisy UI   | ✔️    |
@@ -59,3 +61,4 @@ crejs nextjs
 |         |           |Shadcn     | ✔️    |
 |         |           |Next UI    | ✔️    |
 |         |           |Material UI| ✔️    |
+|         |           |PrimeReact | ✔️    |
